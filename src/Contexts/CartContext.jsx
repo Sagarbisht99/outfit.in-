@@ -20,7 +20,10 @@ export const CartProvider = ({ children }) => {
 
   useEffect(() => {
     // Calculate total price dynamically based on cart
-    const totalPrice = cart.reduce((total, item) => total + item.price * item.amount, 0);
+    const totalPrice = cart.reduce(
+      (total, item) => total + item.price * item.amount,
+      0
+    );
     setTotal(totalPrice);
   }, [cart]);
 
@@ -87,6 +90,7 @@ export const CartProvider = ({ children }) => {
   return (
     <CartContext.Provider
       value={{
+        setCart,
         cart,
         addToCart,
         removeFromCart,
@@ -94,7 +98,7 @@ export const CartProvider = ({ children }) => {
         incrementCart,
         decrementCart,
         cartAmount,
-        total
+        total,
       }}
     >
       {children}

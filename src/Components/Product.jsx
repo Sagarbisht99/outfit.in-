@@ -3,11 +3,14 @@ import { Link } from "react-router-dom";
 import { IoMdAdd } from "react-icons/io";
 import { IoEyeSharp } from "react-icons/io5";
 import { useCart } from "../Contexts/CartContext";
+import { useEffect } from "react";
 
 const Product = ({ product }) => {
   const { id, image, category, price, title } = product;
 
-      const {addToCart} = useCart();    
+      const {addToCart , cart , setCart } = useCart();    
+
+     
       
           
   return (

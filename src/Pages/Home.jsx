@@ -26,7 +26,9 @@ const Home = () => {
             <button
               key={index}
               onClick={() => pageHandler(index + 1)}
-              className={` ${currentPage === index + 1 && "bg-black text-white"} text-center h-[50px] w-[50px] justify-center flex items-center text-xl font-semibold  border-[2px] border-black `}
+              className={` ${
+                currentPage === index + 1 && "bg-black text-white"
+              } text-center h-[50px] w-[50px] justify-center flex items-center text-xl font-semibold  border-[2px] border-black `}
             >
               {index + 1}
             </button>
