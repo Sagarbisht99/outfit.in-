@@ -6,8 +6,6 @@ import Hero from "../Components/Hero";
 const Home = () => {
   const { Products, currentPage, pageHandler } = useProduct();
 
-  console.log(Products.length);
-
   return (
     <div>
       <Hero />
@@ -26,6 +24,7 @@ const Home = () => {
         {[...Array(Products.length / 10)].map((__, index) => {
           return (
             <button
+              key={index}
               onClick={() => pageHandler(index + 1)}
               className={` ${currentPage === index + 1 && "bg-black text-white"} text-center h-[50px] w-[50px] justify-center flex items-center text-xl font-semibold  border-[2px] border-black `}
             >

@@ -9,8 +9,7 @@ const Product = ({ product }) => {
 
       const {addToCart} = useCart();    
       
-            
-
+          
   return (
     <div>
       <div className=" border-[1px] mb-4 relative group transition overflow-hidden border-[#e4e4e4] h-[300px]">

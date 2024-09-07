@@ -5,36 +5,38 @@ const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [cartAmount, setCartAmount] = useState(0);
-
-  const [total, settotal] = useState(0);
-
-  useEffect(() => {
-       // Calculate total price dynamically based on cart
-  const totalPrice = cart.reduce((total, item) => total + item.price * item.amount, 0);
-    settotal(totalPrice)
-  } , [cart])
-
-
+  const [total, setTotal] = useState(0);
 
   useEffect(() => {
-      if(cart){
-         const amount = cart.reduce((acc , curr) => {
-              return acc + curr.amount
-          }, 0)
-           setCartAmount(amount)
-      }
-  },[cart])
+    // Load cart from localStorage
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCart(storedCart);
+  }, []);
 
+  useEffect(() => {
+    // Save cart to localStorage
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
+
+  useEffect(() => {
+    // Calculate total price dynamically based on cart
+    const totalPrice = cart.reduce((total, item) => total + item.price * item.amount, 0);
+    setTotal(totalPrice);
+  }, [cart]);
+
+  useEffect(() => {
+    // Calculate total number of items dynamically based on cart
+    const amount = cart.reduce((acc, curr) => acc + curr.amount, 0);
+    setCartAmount(amount);
+  }, [cart]);
 
   const addToCart = (product, id) => {
     const newItems = { ...product, amount: 1 };
 
-    const cartItem = cart.find((item) => {
-      return item.id === id;
-    });
+    const cartItem = cart.find((item) => item.id === id);
 
     if (cartItem) {
-      const newCart = [...cart].map((item) => {
+      const newCart = cart.map((item) => {
         if (item.id === id) {
           return { ...item, amount: cartItem.amount + 1 };
         } else {
@@ -48,9 +50,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const removeFromCart = (id) => {
-    const newCart = cart.filter((item) => {
-      return item.id !== id;
-    });
+    const newCart = cart.filter((item) => item.id !== id);
     setCart(newCart);
   };
 
@@ -58,29 +58,29 @@ export const CartProvider = ({ children }) => {
     setCart([]);
   };
 
-  const increamentCart = (id) => {
+  const incrementCart = (id) => {
     const cartItem = cart.find((item) => item.id === id);
-    addToCart(cartItem, id);
+    if (cartItem) {
+      addToCart(cartItem, id); // This will increase the quantity of the item
+    }
   };
 
-  const decreamentCart = (id) => {
-    const cartItem = cart.find((item) => {
-      return item.id === id;
-    });
+  const decrementCart = (id) => {
+    const cartItem = cart.find((item) => item.id === id);
 
     if (cartItem) {
-      const newCart = cart.map((item) => {
-        if (item.id === id) {
-          return { ...item, amount: cartItem.amount - 1 };
-        } else {
-          return item;
-        }
-      });
-      setCart(newCart);
-    }
-
-    if (cartItem.amount < 2) {
-      removeFromCart(id);
+      if (cartItem.amount > 1) {
+        const newCart = cart.map((item) => {
+          if (item.id === id) {
+            return { ...item, amount: cartItem.amount - 1 };
+          } else {
+            return item;
+          }
+        });
+        setCart(newCart);
+      } else {
+        removeFromCart(id);
+      }
     }
   };
 
@@ -91,9 +91,9 @@ export const CartProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         clearCart,
-        increamentCart,
-        decreamentCart,
-        cartAmount , 
+        incrementCart,
+        decrementCart,
+        cartAmount,
         total
       }}
     >
