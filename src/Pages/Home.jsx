@@ -1,13 +1,15 @@
-import React from "react";
 import { useProduct } from "../Contexts/ProductContext";
 import Product from "../Components/Product";
 import Hero from "../Components/Hero";
+import Header from "../Components/Header";
+import Footer from "../Components/Footer";
 
 const Home = () => {
   const { Products, currentPage, pageHandler } = useProduct();
 
   return (
     <div>
+      <Header/>
       <Hero />
       <section className="p-16">
         <div className="conatiner mx-auto">
@@ -35,6 +37,7 @@ const Home = () => {
           );
         })}
       </div>
+      <Footer/>
     </div>
   );
 };

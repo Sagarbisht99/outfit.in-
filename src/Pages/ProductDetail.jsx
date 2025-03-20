@@ -1,38 +1,45 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useProduct } from "../Contexts/ProductContext";
 import { useCart } from "../Contexts/CartContext";
 import { useParams } from "react-router-dom";
 import { MdDescription } from "react-icons/md";
+import Footer from "../Components/Footer";
+import Header from "../Components/Header";
 
 const ProductDetail = () => {
   const { Products } = useProduct();
   const { addToCart } = useCart();
   const { id } = useParams();
 
-  // Find the product based on the ID from the URL
+  // Find product by ID
   const product = Products.find((item) => item.id === parseInt(id));
+
+  // Scroll to top when product changes
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
 
   if (!product) {
     return (
       <section className="flex items-center justify-center h-screen bg-gray-100">
-        <span className="text-lg font-medium">Loading...</span>
+        <span className="text-lg font-medium text-gray-700">Loading product details...</span>
       </section>
     );
   }
 
-  const { image, description, price, title } = product; 
-  
+  const { image, description, price, title } = product;
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50 py-8">
+    <div className="flex flex-col items-center justify-between min-h-screen bg-gray-50 py-8">
+      <Header />
       <section className="bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-4xl mx-4 sm:mx-8 lg:mx-16">
-        <div className="lg:flex">
+        <div className="lg:flex lg:flex-row">
           {/* Image Section */}
-          <div className="lg:w-1/2 p-4">
+          <div className="lg:w-1/2 p-6 flex justify-center">
             <img
               src={image}
               alt={title}
-              className="w-full max-w-[300px] h-auto object-cover rounded-lg shadow-md mx-auto"
+              className="w-full max-w-[300px] h-auto object-cover rounded-lg shadow-md"
             />
           </div>
           {/* Details Section */}
@@ -41,9 +48,7 @@ const ProductDetail = () => {
               <h1 className="text-2xl lg:text-3xl font-bold mb-4 text-gray-800">
                 {title}
               </h1>
-              <div className="text-xl text-red-600 font-semibold mb-4">
-                ${price}
-              </div>
+              <p className="text-xl text-red-600 font-semibold mb-4">${price}</p>
               <div className="text-base text-gray-700 mb-6 flex items-start">
                 <MdDescription className="mr-2 text-gray-600" />
                 {description}
@@ -51,13 +56,14 @@ const ProductDetail = () => {
             </div>
             <button
               onClick={() => addToCart(product, product.id)}
-              className="bg-black text-white py-3 px-6  font-semibold hover:bg-blue-700 transition-colors"
+              className="bg-black text-white py-3 px-6 rounded-lg font-semibold hover:bg-gray-800 transition-all duration-300"
             >
               Add To Cart
             </button>
           </div>
-        </div> 
+        </div>
       </section>
+      <Footer />
     </div>
   );
 };

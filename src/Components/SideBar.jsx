@@ -1,4 +1,3 @@
-import React from "react";
 import { useSideBar } from "../Contexts/SideBarContext";
 import { FaArrowRight } from "react-icons/fa";
 import { MdDeleteOutline } from "react-icons/md";
@@ -7,7 +6,7 @@ import CartItem from "./CartItem";
 import { Link } from "react-router-dom";
 
 const SideBar = () => {
-  const { setIsOpen, isOpen, handlerClose } = useSideBar();
+  const { isOpen, handlerClose } = useSideBar();
   const { cart, clearCart, total } = useCart();
 
   return (
@@ -55,13 +54,13 @@ const SideBar = () => {
         </div>
        <div className="flex gap-2 flex-col">
        <Link
-          to="./"
+          to="./payment"
           className="bg-zinc-300 font-medium text-zinc-800 p-4 flex items-center justify-center "
         >
           View Cart
         </Link>
         <Link
-          to="./"
+          to="./payment"
           className="bg-zinc-700 font-medium text-white p-4 flex items-center justify-center "
         >
           CheckOut

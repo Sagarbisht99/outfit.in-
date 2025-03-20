@@ -1,45 +1,43 @@
-import React from "react";
 import { Link } from "react-router-dom";
 import { MdCancel } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import { TiMinus } from "react-icons/ti";
 import { useCart } from "../Contexts/CartContext";
+import PropTypes from "prop-types";  // ✅ Import PropTypes
 
 const CartItem = ({ item }) => {
   const { title, id, image, price, amount } = item;
 
-  const {removeFromCart , increamentCart , decreamentCart } = useCart()
-
-
+  const { removeFromCart, increamentCart, decreamentCart } = useCart();
 
   return (
-    <div className="flex gap-x-4  lg:px-6 border-b border-grey-200 w-full font-light text-gray-500">
-      <div className=" w-full min-h-[150px] flex items-center gap-x-4 ">
+    <div className="flex gap-x-4 lg:px-6 border-b border-grey-200 w-full font-light text-gray-500">
+      <div className="w-full min-h-[150px] flex items-center gap-x-4">
         <div>
           <Link to={`/product/${id}`}>
-            <img className="max-w-[80px]" src={image} alt="" />
+            <img className="max-w-[80px]" src={image} alt={title} />
           </Link>
         </div>
         <div className="flex flex-col w-full gap-3">
           <div className="flex items-center w-full justify-between">
             <Link
-              className="uppercase font-medium max-w-[240px] text-black hover:underline "
+              className="uppercase font-medium max-w-[240px] text-black hover:underline"
               to={`/product/${id}`}
             >
               {title}
             </Link>
             <div className="text-xl cursor-pointer">
-              <MdCancel onClick={() => removeFromCart(id) } className="text-gray-900 text-2xl hover:text-red-500 transition " />
+              <MdCancel onClick={() => removeFromCart(id)} className="text-gray-900 text-2xl hover:text-red-500 transition" />
             </div>
           </div>
-          <div className=" flex gap-x-2 items-center  h-[36px] text-sm">
+          <div className="flex gap-x-2 items-center h-[36px] text-sm">
             <div className="flex flex-1 max-w-[100px] items-center h-full border text-black font-medium">
-              <div onClick={() => decreamentCart(id) } className="flex-1 flex items-center justify-center cursor-pointer">
+              <div onClick={() => decreamentCart(id)} className="flex-1 flex items-center justify-center cursor-pointer">
                 <TiMinus />
               </div>
               <div className="px-2 h-full flex justify-center items-center">{amount}</div>
-              <div onClick={() => increamentCart(id) } className="flex-1 flex items-center justify-center cursor-pointer">
-              <FaPlus />
+              <div onClick={() => increamentCart(id)} className="flex-1 flex items-center justify-center cursor-pointer">
+                <FaPlus />
               </div>
             </div>
             <div>$ {price}</div>
@@ -49,6 +47,17 @@ const CartItem = ({ item }) => {
       </div>
     </div>
   );
+};
+
+// ✅ Add PropTypes validation
+CartItem.propTypes = {
+  item: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    title: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired,
+    amount: PropTypes.number.isRequired,
+  }).isRequired,
 };
 
 export default CartItem;
